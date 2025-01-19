@@ -14,18 +14,15 @@ type Zip interface {
 }
 
 type zipFile struct {
-	Filename string
-
 	buff    *bytes.Buffer
 	zWriter *zip.Writer
 }
 
-func New(filename string) Zip {
+func New() Zip {
 	buff := new(bytes.Buffer)
 	return &zipFile{
-		Filename: filename,
-		buff:     buff,
-		zWriter:  zip.NewWriter(buff),
+		buff:    buff,
+		zWriter: zip.NewWriter(buff),
 	}
 }
 

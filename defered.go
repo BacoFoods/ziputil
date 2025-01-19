@@ -17,13 +17,12 @@ type zipDefered struct {
 	err error
 }
 
-func Defered(filename string) ZipDefered {
+func Defered() ZipDefered {
 	buff := new(bytes.Buffer)
 	return &zipDefered{
 		zipFile: zipFile{
-			Filename: filename,
-			buff:     buff,
-			zWriter:  zip.NewWriter(buff),
+			buff:    buff,
+			zWriter: zip.NewWriter(buff),
 		},
 	}
 }
