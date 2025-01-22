@@ -12,7 +12,7 @@ type ZipDefered interface {
 }
 
 type zipDefered struct {
-	zipFile
+	*zipFile
 
 	err error
 }
@@ -20,7 +20,7 @@ type zipDefered struct {
 func Defered() ZipDefered {
 	buff := new(bytes.Buffer)
 	return &zipDefered{
-		zipFile: zipFile{
+		zipFile: &zipFile{
 			buff:    buff,
 			zWriter: zip.NewWriter(buff),
 		},
@@ -35,13 +35,11 @@ func Defered() ZipDefered {
 // If an error is returned, it is guaranteed that the zip writer has been closed and the returned error will be the last error that occurred.
 // There is no guarantee that the zip file is valid and that a there are no more errors in the process.
 func (z *zipDefered) Bytes() ([]byte, error) {
-	defer z.zWriter.Close()
-
 	if z.err != nil {
 		return nil, z.err
 	}
 
-	return z.buff.Bytes(), nil
+	return z.zipFile.Bytes(), nil
 }
 
 // AddFile adds a file to the zip archive.
